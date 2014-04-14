@@ -5,14 +5,21 @@ nn2
 
 NN2 is a generic toolbox for evolving neural networks (it depends on sferes2).
 
+*If you use this software in an academic article, please cite:*
+
+Mouret, J.-B. and Doncieux, S. (2012). Encouraging Behavioral Diversity in Evolutionary Robotics: an Empirical Study. Evolutionary Computation. Vol 20 No 1 Pages 91-133.
+
 ### Usage & installation
---------------------
 - copy nn2 to the "modules" directory in the sferes2 root directory.
 - add nn2 in modules.conf in the sferes2 root directory
 - run ./waf configure and ./waf build
 
+
 ### Academic paper that uses nn2
-* Please note that many of these papers extends nn *
+* Please note that many of these papers extends nn2 *
+
+
+
 
 -  Tonelli, P. and Mouret, J.-B. (2013). On the Relationships between Generative Encodings, Regularity, and Learning Abilities when Evolving Plastic Artificial Neural Networks. PLoS One. Vol 8 No 11 Pages e79138.
 - Clune*, J. and Mouret, J.-B. and Lipson, H. (2013). The evolutionary origins of modularity. Proceedings of the Royal Society B. Vol 280 (J. Clune and J.-B. Mouret contributed equally to this work) Pages 20122863.
