@@ -52,30 +52,30 @@ struct Params1
 {
   struct dnn
   {
-    static const size_t nb_inputs = 3;
-    static const size_t nb_outputs = 1;
+    SFERES_CONST size_t nb_inputs = 3;
+    SFERES_CONST size_t nb_outputs = 1;
 
-    static const float m_rate_add_conn = 1.0f;
-    static const float m_rate_del_conn = 0.3f;
-    static const float m_rate_change_conn = 1.0f;
-    static const float m_rate_add_neuron = 1.0f;
-    static const float m_rate_del_neuron = 0.2f;
+    SFERES_CONST float m_rate_add_conn = 1.0f;
+    SFERES_CONST float m_rate_del_conn = 0.3f;
+    SFERES_CONST float m_rate_change_conn = 1.0f;
+    SFERES_CONST float m_rate_add_neuron = 1.0f;
+    SFERES_CONST float m_rate_del_neuron = 0.2f;
 
-    static const init_t init = ff;
+    SFERES_CONST init_t init = ff;
   };
   struct evo_float
   {
-    static const float mutation_rate = 0.1f;
-    static const float cross_rate = 0.1f;
-    static const mutation_t mutation_type = polynomial;
-    static const cross_over_t cross_over_type = sbx;
-    static const float eta_m = 15.0f;
-    static const float eta_c = 15.0f;
+    SFERES_CONST float mutation_rate = 0.1f;
+    SFERES_CONST float cross_rate = 0.1f;
+    SFERES_CONST mutation_t mutation_type = polynomial;
+    SFERES_CONST cross_over_t cross_over_type = sbx;
+    SFERES_CONST float eta_m = 15.0f;
+    SFERES_CONST float eta_c = 15.0f;
   };
   struct parameters
   {
-    static const float min = -2.0f;
-    static const float max = 2.0f;
+    SFERES_CONST float min = -2.0f;
+    SFERES_CONST float max = 2.0f;
   };
 
   struct cppn
@@ -84,18 +84,18 @@ struct Params1
     struct sampled
     {
       SFERES_ARRAY(float, values, 0, 1, 2);
-      static const float mutation_rate = 0.1f;
-      static const float cross_rate = 0.25f;
-      static const bool ordered = false;
+      SFERES_CONST float mutation_rate = 0.1f;
+      SFERES_CONST float cross_rate = 0.25f;
+      SFERES_CONST bool ordered = false;
     };
     struct evo_float
     {
-      static const float mutation_rate = 0.1f;
-      static const float cross_rate = 0.1f;
-      static const mutation_t mutation_type = polynomial;
-      static const cross_over_t cross_over_type = sbx;
-      static const float eta_m = 15.0f;
-      static const float eta_c = 15.0f;
+      SFERES_CONST float mutation_rate = 0.1f;
+      SFERES_CONST float cross_rate = 0.1f;
+      SFERES_CONST mutation_t mutation_type = polynomial;
+      SFERES_CONST cross_over_t cross_over_type = sbx;
+      SFERES_CONST float eta_m = 15.0f;
+      SFERES_CONST float eta_c = 15.0f;
     };
   };
 };
@@ -105,34 +105,34 @@ struct Params2
 {
   struct dnn
   {
-    static const size_t nb_inputs = 4;
-    static const size_t nb_outputs = 1;
+    SFERES_CONST size_t nb_inputs = 4;
+    SFERES_CONST size_t nb_outputs = 1;
 
-    static const float m_rate_add_conn = 1.0f;
-    static const float m_rate_del_conn = 0.3f;
-    static const float m_rate_change_conn = 1.0f;
-    static const float m_rate_add_neuron = 1.0f;
-    static const float m_rate_del_neuron = 0.2f;
+    SFERES_CONST float m_rate_add_conn = 1.0f;
+    SFERES_CONST float m_rate_del_conn = 0.3f;
+    SFERES_CONST float m_rate_change_conn = 1.0f;
+    SFERES_CONST float m_rate_add_neuron = 1.0f;
+    SFERES_CONST float m_rate_del_neuron = 0.2f;
 
-    static const float weight_sigma = 0.5f;
-    static const float vect_sigma = 0.5f;
-    static const float m_rate_weight = 1.0f;
-    static const float m_rate_fparams = 1.0f;
-    static const init_t init = ff;
+    SFERES_CONST float weight_sigma = 0.5f;
+    SFERES_CONST float vect_sigma = 0.5f;
+    SFERES_CONST float m_rate_weight = 1.0f;
+    SFERES_CONST float m_rate_fparams = 1.0f;
+    SFERES_CONST init_t init = ff;
   };
   struct evo_float
   {
-    static const float mutation_rate = 0.1f;
-    static const float cross_rate = 0.1f;
-    static const mutation_t mutation_type = polynomial;
-    static const cross_over_t cross_over_type = sbx;
-    static const float eta_m = 15.0f;
-    static const float eta_c = 15.0f;
+    SFERES_CONST float mutation_rate = 0.1f;
+    SFERES_CONST float cross_rate = 0.1f;
+    SFERES_CONST mutation_t mutation_type = polynomial;
+    SFERES_CONST cross_over_t cross_over_type = sbx;
+    SFERES_CONST float eta_m = 15.0f;
+    SFERES_CONST float eta_c = 15.0f;
   };
   struct parameters
   {
-    static const float min = -2.0f;
-    static const float max = 2.0f;
+    SFERES_CONST float min = -2.0f;
+    SFERES_CONST float max = 2.0f;
   };
 
   struct cppn
@@ -141,18 +141,18 @@ struct Params2
     struct sampled
     {
       SFERES_ARRAY(float, values, 0, 1, 2);
-      static const float mutation_rate = 0.1f;
-      static const float cross_rate = 0.25f;
-      static const bool ordered = false;
+      SFERES_CONST float mutation_rate = 0.1f;
+      SFERES_CONST float cross_rate = 0.25f;
+      SFERES_CONST bool ordered = false;
     };
     struct evo_float
     {
-      static const float mutation_rate = 0.1f;
-      static const float cross_rate = 0.1f;
-      static const mutation_t mutation_type = polynomial;
-      static const cross_over_t cross_over_type = sbx;
-      static const float eta_m = 15.0f;
-      static const float eta_c = 15.0f;
+      SFERES_CONST float mutation_rate = 0.1f;
+      SFERES_CONST float cross_rate = 0.1f;
+      SFERES_CONST mutation_t mutation_type = polynomial;
+      SFERES_CONST cross_over_t cross_over_type = sbx;
+      SFERES_CONST float eta_m = 15.0f;
+      SFERES_CONST float eta_c = 15.0f;
     };
   };
   struct hyper_nn
@@ -168,13 +168,13 @@ struct Params2
                  );
     SFERES_ARRAY(float, weights, -1, 0, 1);
     SFERES_ARRAY(float, bias, -1, 0, 1);
-    static const size_t nb_inputs = 2;
-    static const size_t nb_outputs = 1;
-    static const size_t nb_hidden = 4;
-    static const size_t nb_pfparams = 0;
-    static const size_t nb_afparams = 1;
-    static const float conn_threshold = 0.2f;
-    static const float max_y = 10.0f;
+    SFERES_CONST size_t nb_inputs = 2;
+    SFERES_CONST size_t nb_outputs = 1;
+    SFERES_CONST size_t nb_hidden = 4;
+    SFERES_CONST size_t nb_pfparams = 0;
+    SFERES_CONST size_t nb_afparams = 1;
+    SFERES_CONST float conn_threshold = 0.2f;
+    SFERES_CONST float max_y = 10.0f;
     typedef nn::Neuron<nn::PfWSum<>,
                        nn::AfTanh<nn::params::Vectorf<1> > > neuron_t;
     typedef nn::Connection<> connection_t;

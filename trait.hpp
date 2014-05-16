@@ -42,9 +42,7 @@
 #include <map>
 #include <valarray>
 
-#ifdef EIGEN2_ENABLED
 #include <Eigen/Core>
-#endif
 
 #include "params.hpp"
 

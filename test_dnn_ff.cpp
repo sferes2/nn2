@@ -60,37 +60,37 @@ struct Params
 {
   struct evo_float
   {
-    static const float mutation_rate = 0.1f;
-    static const float cross_rate = 0.1f;
-    static const mutation_t mutation_type = polynomial;
-    static const cross_over_t cross_over_type = sbx;
-    static const float eta_m = 15.0f;
-    static const float eta_c = 15.0f;
+    SFERES_CONST float mutation_rate = 0.1f;
+    SFERES_CONST float cross_rate = 0.1f;
+    SFERES_CONST mutation_t mutation_type = polynomial;
+    SFERES_CONST cross_over_t cross_over_type = sbx;
+    SFERES_CONST float eta_m = 15.0f;
+    SFERES_CONST float eta_c = 15.0f;
   };
   struct parameters
   {
     // maximum value of parameters
-    static const float min = -5.0f;
+    SFERES_CONST float min = -5.0f;
     // minimum value
-    static const float max = 5.0f;
+    SFERES_CONST float max = 5.0f;
   };
   struct dnn
   {
-    static const size_t nb_inputs	= 4;
-    static const size_t nb_outputs	= 2;
-    static const size_t min_nb_neurons	= 4;
-    static const size_t max_nb_neurons	= 5;
-    static const size_t min_nb_conns	= 100;
-    static const size_t max_nb_conns	= 101;
+    SFERES_CONST size_t nb_inputs	= 4;
+    SFERES_CONST size_t nb_outputs	= 2;
+    SFERES_CONST size_t min_nb_neurons	= 4;
+    SFERES_CONST size_t max_nb_neurons	= 5;
+    SFERES_CONST size_t min_nb_conns	= 100;
+    SFERES_CONST size_t max_nb_conns	= 101;
 
-    static const float m_rate_add_conn	= 1.0f;
-    static const float m_rate_del_conn	= 0.1f;
-    static const float m_rate_change_conn = 1.0f;
-    static const float m_rate_add_neuron  = 1.0f;
-    static const float m_rate_del_neuron  = 1.0f;
+    SFERES_CONST float m_rate_add_conn	= 1.0f;
+    SFERES_CONST float m_rate_del_conn	= 0.1f;
+    SFERES_CONST float m_rate_change_conn = 1.0f;
+    SFERES_CONST float m_rate_add_neuron  = 1.0f;
+    SFERES_CONST float m_rate_del_neuron  = 1.0f;
 
-    static const int io_param_evolving = true;
-    static const init_t init = ff;
+    SFERES_CONST int io_param_evolving = true;
+    SFERES_CONST init_t init = ff;
   };
 };
 

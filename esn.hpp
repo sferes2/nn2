@@ -39,8 +39,8 @@
 #define _NN_ESN_HPP_
 
 #include <Eigen/Core>
-#include <Eigen/Array>
 #include <Eigen/QR> 
+#include <Eigen/Eigenvalues>
 
 #include <sferes/misc/rand.hpp>
 
@@ -93,8 +93,8 @@ namespace nn
 	  else
 	    conn(i, j) = 0.0f;
       // spectral radius
-      float max = (conn.eigenvalues().real().cwise().square()
-		   + conn.eigenvalues().imag().cwise().square()
+      float max = (conn.eigenvalues().real().array().square()
+		   + conn.eigenvalues().imag().array().square()
 		   ).maxCoeff();
       assert(max > 0);
       conn *= alpha / sqrtf(max);

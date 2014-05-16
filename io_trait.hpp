@@ -42,9 +42,7 @@
 #include <map>
 #include <valarray>
 
-#ifdef EIGEN2_ENABLED
 #include <Eigen/Core>
-#endif
 
 namespace nn
 {
@@ -57,7 +55,6 @@ namespace nn
     typedef std::valarray<T> vector_t;
   };
 
-#ifdef EIGEN2_ENABLED
   // go with eigen with float (TODO : double)
   template<>
   struct io_trait<float>
@@ -67,7 +64,6 @@ namespace nn
     static vector_t zero(size_t k) { return Eigen::VectorXf::Zero(k); }
 
   };
-#endif
 
   template<>
   struct io_trait<std::pair<float, float> >

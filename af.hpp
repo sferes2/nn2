@@ -36,6 +36,7 @@
 #define _NN_AF_HPP_
 
 #include "params.hpp"
+#include <sferes/stc.hpp>
 
 // classic activation functions
 namespace nn
@@ -59,7 +60,7 @@ namespace nn
   struct AfTanh : public Af<P>
   {
     typedef P params_t;
-    static const float lambda = 5.0f;
+    SFERES_CONST float lambda = 5.0f;
     AfTanh() { assert(trait<P>::size(this->_params) == 1); }
     float operator()(float p) const
     {
@@ -72,7 +73,7 @@ namespace nn
   struct AfTanhNoBias : public Af<P>
   {
     typedef params::Dummy params_t;
-    static const float lambda = 5.0f;
+    SFERES_CONST float lambda = 5.0f;
     AfTanhNoBias() { }
     float operator()(float p) const
     {
@@ -86,7 +87,7 @@ namespace nn
   struct AfSigmoidNoBias : public Af<>
   {
     typedef params::Dummy params_t;
-    static const float lambda = 5.0f;
+    SFERES_CONST float lambda = 5.0f;
     AfSigmoidNoBias() { }
     float operator()(float p) const { return 1.0 / (exp(-p * lambda) + 1); }
   protected:
@@ -96,7 +97,7 @@ namespace nn
   struct AfSigmoidBias : public Af<P>
   {
     typedef P params_t;
-    static const float lambda = 5.0f;
+    SFERES_CONST float lambda = 5.0f;
     AfSigmoidBias() { assert(this->_params.size() == 1); }
     float operator()(float p) const
     {

@@ -38,6 +38,7 @@
 
 #include <cstdlib>
 #include <sferes/misc/rand.hpp>
+#include <sferes/stc.hpp>
 
 #include "params.hpp"
 #include "trait.hpp"
@@ -86,12 +87,7 @@ namespace nn
        //_w_cache.dot(inputs)<<std::endl;
       if (inputs.size() == 0)
         return 0.0f;
-#ifdef EIGEN2_ENABLED
-      return _w_cache.dot(inputs);
-#else
- #warning "No eigen2 -> no vectorization of pwfsum"
-      return (_w_cache * inputs).sum();
-#endif
+      return inputs.dot(_w_cache);
     }
     protected:
       trait<float>::vector_t _w_cache;
@@ -112,9 +108,9 @@ namespace nn
   {
     typedef std::pair<float, float> weight_t;
     typedef P params_t;
-    static const float dt = 0.01;
-    static const float a_r = 20.0f;
-    static const float a_x = 20.0f;
+    SFERES_CONST float dt = 0.01;
+    SFERES_CONST float a_r = 20.0f;
+    SFERES_CONST float a_x = 20.0f;
     void set_r(float r) { _r = r; }
     void set_x(float x) { _x = x; }
     void set_omega(float o) { _omega = o; }
