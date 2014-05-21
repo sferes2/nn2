@@ -47,7 +47,7 @@ namespace nn
   namespace cppn
   {
     enum func_e { sine = 0, sigmoid, gaussian, linear };
-    static const size_t nb_functions = 3;
+    SFERES_CONST size_t nb_functions = 3;
     SFERES_CLASS(AfParams)
     {
       public:

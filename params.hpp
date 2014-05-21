@@ -63,7 +63,7 @@ namespace nn
     struct Vectorf
     {
       typedef float type_t;
-      static const int s=S;
+      BOOST_STATIC_CONSTEXPR int s=S;
       Vectorf() : _data(S) {}
       // magic cast !
       template<typename T>

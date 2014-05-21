@@ -42,7 +42,7 @@
 #include <map>
 #include <valarray>
 
-#ifdef EIGEN2_ENABLED
+#ifdef EIGEN3_ENABLED
 #include <Eigen/Core>
 #endif
 

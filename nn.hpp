@@ -379,6 +379,23 @@ namespace nn
           _init_io();
          }
 
+      // remove the connection with a weigth that is smaller (in absolute value) to the threshold 
+      // !!! WARNING
+      // this method will destroy your neural network...
+      int remove_low_weights(float threshold)
+      {
+	int nb_removed = 0;
+	std::vector<edge_desc_t> to_remove;
+	BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+          {
+	    if (fabs(_g[e].get_weight()) < threshold)
+	      to_remove.push_back(e);
+          }
+	for (size_t i = 0; i < to_remove.size(); ++i)
+	  remove_edge(to_remove[i], this->_g);
+	return to_remove.size();
+      }
+
        // remove neurons that are not connected to both one input and
        // one output (this is NOT callled automatically in NN
        //

@@ -48,7 +48,7 @@ def build(bld):
     test_nn.source = 'test_nn.cpp'
     test_nn.includes = '. ../../'
     test_nn.uselib_local = ''
-    test_nn.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK'
+    test_nn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK'
     test_nn.target = 'test_nn'
     test_nn.unit_test = 1
 
@@ -56,7 +56,7 @@ def build(bld):
     test_dnn.source = 'test_dnn.cpp'
     test_dnn.includes = '. ../../'
     test_dnn.uselib_local = 'sferes2'
-    test_dnn.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_dnn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_dnn.target = 'test_dnn'
     test_dnn.unit_test = 1
 
@@ -64,7 +64,7 @@ def build(bld):
     test_mlp.source = 'test_mlp.cpp'
     test_mlp.includes = '. ../../'
     test_mlp.uselib_local = 'sferes2'
-    test_mlp.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_mlp.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_mlp.target = 'test_mlp'
     test_mlp.unit_test = 1
 
@@ -72,7 +72,7 @@ def build(bld):
     test_esn.source = 'test_esn.cpp'
     test_esn.includes = '. ../../'
     test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_esn.target = 'test_esn'
     test_esn.unit_test = 1
 
@@ -80,7 +80,7 @@ def build(bld):
     test_esn.source = 'test_hyper_nn.cpp'
     test_esn.includes = '. ../../'
     test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_esn.target = 'test_hyper_nn'
     test_esn.unit_test = 1
 
@@ -89,7 +89,7 @@ def build(bld):
     test_esn.source = 'test_dnn_ff.cpp'
     test_esn.includes = '. ../../'
     test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_esn.target = 'test_dnn_ff'
     test_esn.unit_test = 1
 
@@ -99,7 +99,7 @@ def build(bld):
     test_osc.source = 'test_osc.cpp'
     test_osc.includes = '. ../../'
     test_osc.uselib_local = 'sferes2'
-    test_osc.uselib = 'EIGEN2 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
+    test_osc.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
     test_osc.target = 'test_osc'
     test_osc.unit_test = 1
 
@@ -108,6 +108,6 @@ def build(bld):
     bench_nn.source = 'bench_nn.cpp'
     bench_nn.includes = '. ../../'
     bench_nn.uselib_local = 'sferes2'
-    bench_nn.uselib = 'EIGEN2 BOOST_GRAPH BOOST'
+    bench_nn.uselib = 'EIGEN3 BOOST_GRAPH BOOST'
     bench_nn.target = 'bench_nn'
 

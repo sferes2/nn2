@@ -42,7 +42,7 @@
 #include <map>
 #include <valarray>
 
-#ifdef EIGEN2_ENABLED
+#ifdef EIGEN3_ENABLED
 #include <Eigen/Core>
 #endif
 
@@ -57,7 +57,7 @@ namespace nn
     typedef std::valarray<T> vector_t;
   };
 
-#ifdef EIGEN2_ENABLED
+#ifdef EIGEN3_ENABLED
   // go with eigen with float (TODO : double)
   template<>
   struct io_trait<float>
