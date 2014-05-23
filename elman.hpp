@@ -116,10 +116,10 @@ namespace nn
     template<int NbInputs, int NbHidden, int NbOutputs>
     struct Count
     {
-      static const int nb_inputs = NbInputs + 1; // bias is an input
-      static const int nb_outputs = NbOutputs;
-      static const int nb_hidden = NbHidden;
-      static const int nb_params = 
+      SFERES_CONST int nb_inputs = NbInputs + 1; // bias is an input
+      SFERES_CONST int nb_outputs = NbOutputs;
+      SFERES_CONST int nb_hidden = NbHidden;
+      SFERES_CONST int nb_params = 
 	nb_inputs * nb_hidden // input to hidden (full)
 	+ nb_hidden * nb_outputs // hidden to output (full)
 	+ nb_hidden // hidden to context (1-1)

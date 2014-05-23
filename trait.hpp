@@ -42,6 +42,7 @@
 #include <map>
 #include <valarray>
 
+#ifdef EIGEN3_ENABLED
 #include <Eigen/Core>
 
 #include "params.hpp"

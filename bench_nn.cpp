@@ -42,8 +42,8 @@ int main()
 
   nn_t nn;
 
-  static const size_t nb_io = 5;
-  static const size_t nb_h = 100;
+  BOOST_STATIC_CONSTEXPR size_t nb_io = 5;
+  BOOST_STATIC_CONSTEXPR size_t nb_h = 100;
 
   nn.set_nb_inputs(nb_io);
   nn.set_nb_outputs(nb_io);

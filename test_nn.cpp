@@ -80,6 +80,27 @@ BOOST_AUTO_TEST_CASE(nn_basic)
   
 }
 
+
+BOOST_AUTO_TEST_CASE(nn_remove_small_weights)
+{
+  using namespace nn;
+  NN<Neuron<PfWSum<>, AfTanh<float> >, Connection<> > nn;
+
+  nn.set_nb_inputs(3);
+  nn.set_nb_outputs(3);
+  nn.add_connection_w(nn.get_input(0), nn.get_output(0), 0.5);
+  nn.add_connection_w(nn.get_input(1), nn.get_output(0), 0.25);
+  nn.add_connection_w(nn.get_input(2), nn.get_output(2), -0.25);
+  nn.add_connection_w(nn.get_input(0), nn.get_output(2), 0.05);
+  nn.add_connection_w(nn.get_input(2), nn.get_output(1), -0.05);
+  nn.init();
+  BOOST_CHECK_EQUAL(nn.get_nb_connections(), 5);
+  int k = nn.remove_low_weights(0.1);
+  std::cout << k << std::endl;
+  BOOST_CHECK_EQUAL(nn.get_nb_connections(), 3);
+}
+
+
 BOOST_AUTO_TEST_CASE(nn_speed)
 {
   using namespace nn;

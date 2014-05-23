@@ -100,10 +100,10 @@ namespace sferes
         typedef typename nn::NN<neuron_t, connection_t> nn_t;
         typedef typename nn_t::vertex_desc_t v_d_t;
         typedef typename gen_t::nn_t gen_nn_t;
-        static const size_t nb_pfparams = Params::hyper_nn::nb_pfparams;
-        static const size_t nb_afparams = Params::hyper_nn::nb_afparams;
-        static const size_t nb_cppn_inputs = 2 + 2;
-        static const size_t nb_cppn_outputs = 2;
+        SFERES_CONST size_t nb_pfparams = Params::hyper_nn::nb_pfparams;
+        SFERES_CONST size_t nb_afparams = Params::hyper_nn::nb_afparams;
+        SFERES_CONST size_t nb_cppn_inputs = 2 + 2;
+        SFERES_CONST size_t nb_cppn_outputs = 2;
 
         void develop()
         {
@@ -128,10 +128,10 @@ namespace sferes
            // create the nn
           _nn.set_nb_inputs(Params::hyper_nn::nb_inputs);
           _nn.set_nb_outputs(Params::hyper_nn::nb_outputs);
-          static const size_t skip =
+          SFERES_CONST size_t skip =
             Params::hyper_nn::nb_inputs
             + Params::hyper_nn::nb_outputs;
-          static const size_t skip_total =
+          SFERES_CONST size_t skip_total =
             Params::hyper_nn::nb_inputs
             + Params::hyper_nn::nb_outputs
             + Params::hyper_nn::nb_hidden;

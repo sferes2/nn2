@@ -87,7 +87,12 @@ namespace nn
        //_w_cache.dot(inputs)<<std::endl;
       if (inputs.size() == 0)
         return 0.0f;
-      return inputs.dot(_w_cache);
+#ifdef EIGEN3_ENABLED
+      return _w_cache.dot(inputs);
+#else
+ #warning "No EIGEN3 -> no vectorization of pwfsum"
+      return (_w_cache * inputs).sum();
+#endif
     }
     protected:
       trait<float>::vector_t _w_cache;
@@ -108,9 +113,9 @@ namespace nn
   {
     typedef std::pair<float, float> weight_t;
     typedef P params_t;
-    SFERES_CONST float dt = 0.01;
-    SFERES_CONST float a_r = 20.0f;
-    SFERES_CONST float a_x = 20.0f;
+    BOOST_STATIC_CONSTEXPR float dt = 0.01;
+    BOOST_STATIC_CONSTEXPR float a_r = 20.0f;
+    BOOST_STATIC_CONSTEXPR float a_x = 20.0f;
     void set_r(float r) { _r = r; }
     void set_x(float x) { _x = x; }
     void set_omega(float o) { _omega = o; }
