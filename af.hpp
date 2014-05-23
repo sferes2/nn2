@@ -36,7 +36,6 @@
 #define _NN_AF_HPP_
 
 #include "params.hpp"
-#include <sferes/stc.hpp>
 
 // classic activation functions
 namespace nn
@@ -73,7 +72,6 @@ namespace nn
   struct AfTanhNoBias : public Af<P>
   {
     typedef params::Dummy params_t;
-    SFERES_CONST float lambda = 5.0f;
     BOOST_STATIC_CONSTEXPR float lambda = 5.0f;
     AfTanhNoBias() { }
     float operator()(float p) const

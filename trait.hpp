@@ -44,6 +44,7 @@
 
 #ifdef EIGEN3_ENABLED
 #include <Eigen/Core>
+#endif
 
 #include "params.hpp"
 

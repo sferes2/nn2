@@ -38,7 +38,6 @@
 
 #include <cstdlib>
 #include <sferes/misc/rand.hpp>
-#include <sferes/stc.hpp>
 
 #include "params.hpp"
 #include "trait.hpp"

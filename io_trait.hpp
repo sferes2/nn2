@@ -44,6 +44,7 @@
 
 #ifdef EIGEN3_ENABLED
 #include <Eigen/Core>
+#endif
 
 namespace nn
 {
@@ -66,6 +67,7 @@ namespace nn
     static vector_t zero(size_t k) { return Eigen::VectorXf::Zero(k); }
 
   };
+#endif
 
   template<>
   struct io_trait<std::pair<float, float> >
