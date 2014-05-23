@@ -39,8 +39,8 @@
 #define _NN_ESN_HPP_
 
 #include <Eigen/Core>
-#include <Eigen/Array>
 #include <Eigen/QR> 
+#include <Eigen/Eigenvalues>
 
 #include <sferes/misc/rand.hpp>
 #include <sferes/misc.hpp>

@@ -40,6 +40,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/QR> 
+#include <Eigen/Eigenvalues>
 
 #include <sferes/misc/rand.hpp>
 
