@@ -69,14 +69,6 @@ def build(bld):
     test_mlp.unit_test = 1
 
     test_esn = bld.new_task_gen('cxx', 'program')
-    test_esn.source = 'test_esn.cpp'
-    test_esn.includes = '. ../../'
-    test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_esn.target = 'test_esn'
-    test_esn.unit_test = 1
-
-    test_esn = bld.new_task_gen('cxx', 'program')
     test_esn.source = 'test_hyper_nn.cpp'
     test_esn.includes = '. ../../'
     test_esn.uselib_local = 'sferes2'
