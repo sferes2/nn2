@@ -4,13 +4,13 @@
 //|
 //| This software is a computer program whose purpose is to facilitate
 //| experiments in evolutionary computation and evolutionary robotics.
-//| 
+//|
 //| This software is governed by the CeCILL license under French law
 //| and abiding by the rules of distribution of free software.  You
 //| can use, modify and/ or redistribute the software under the terms
 //| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 //| following URL "http://www.cecill.info".
-//| 
+//|
 //| As a counterpart to the access to the source code and rights to
 //| copy, modify and redistribute granted by the license, users are
 //| provided only with a limited warranty and the software's author,
@@ -32,7 +32,7 @@
 //| The fact that you are presently reading this means that you have
 //| had knowledge of the CeCILL license and that you accept its terms.
 
-#define BOOST_TEST_DYN_LINK 
+#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE dnn
 
 #include <iostream>
@@ -61,18 +61,16 @@ using namespace sferes::gen::dnn;
 using namespace sferes::gen::evo_float;
 
 template<typename T1, typename T2>
-void check_list_equal(const T1& v1, const T2& v2)
-{
+void check_list_equal(const T1& v1, const T2& v2) {
   BOOST_CHECK_EQUAL(v1.size(), v2.size());
   typename T1::const_iterator it1 = v1.begin();
   typename T1::const_iterator it2 = v2.begin();
   for (; it1 != v1.end(); ++it1, ++it2)
     BOOST_CHECK(fabs(*it1 - *it2) < 1e-3);
 }
- 
+
 template<typename NN>
-void check_nn_equal(NN& nn1, NN& nn2)
-{
+void check_nn_equal(NN& nn1, NN& nn2) {
   nn1.init();
   nn2.init();
 
@@ -89,29 +87,26 @@ void check_nn_equal(NN& nn1, NN& nn2)
 //       BOOST_CHECK_EQUAL((char)ifs1.get(), (char)ifs2.get());
 //     }
 
-  std::pair<typename NN::vertex_it_t, typename NN::vertex_it_t> vp1 = 
+  std::pair<typename NN::vertex_it_t, typename NN::vertex_it_t> vp1 =
     boost::vertices(nn1.get_graph());
-  std::pair<typename NN::vertex_it_t, typename NN::vertex_it_t> vp2 = 
+  std::pair<typename NN::vertex_it_t, typename NN::vertex_it_t> vp2 =
     boost::vertices(nn2.get_graph());
-  while (vp1.first != vp1.second)
-    {
-      BOOST_CHECK_EQUAL(nn1.get_graph()[*vp1.first].get_in_degree(),
-			nn2.get_graph()[*vp2.first].get_in_degree());
-      check_list_equal(nn1.get_graph()[*vp1.first].get_afparams(),
-		       nn2.get_graph()[*vp1.first].get_afparams());
-      check_list_equal(nn1.get_graph()[*vp1.first].get_pfparams(),
-		       nn2.get_graph()[*vp1.first].get_pfparams());
-      ++vp1.first;
-      ++vp2.first;
-    }
+  while (vp1.first != vp1.second) {
+    BOOST_CHECK_EQUAL(nn1.get_graph()[*vp1.first].get_in_degree(),
+                      nn2.get_graph()[*vp2.first].get_in_degree());
+    check_list_equal(nn1.get_graph()[*vp1.first].get_afparams(),
+                     nn2.get_graph()[*vp1.first].get_afparams());
+    check_list_equal(nn1.get_graph()[*vp1.first].get_pfparams(),
+                     nn2.get_graph()[*vp1.first].get_pfparams());
+    ++vp1.first;
+    ++vp2.first;
+  }
 
 }
 
- 
-struct Params
-{
-  struct evo_float
-  {
+
+struct Params {
+  struct evo_float {
     SFERES_CONST float mutation_rate = 0.1f;
     SFERES_CONST float cross_rate = 0.1f;
     SFERES_CONST mutation_t mutation_type = polynomial;
@@ -119,15 +114,13 @@ struct Params
     SFERES_CONST float eta_m = 15.0f;
     SFERES_CONST float eta_c = 15.0f;
   };
-  struct parameters
-  {
+  struct parameters {
     // maximum value of parameters
     SFERES_CONST float min = -5.0f;
     // minimum value
     SFERES_CONST float max = 5.0f;
   };
-  struct dnn
-  {
+  struct dnn {
     SFERES_CONST size_t nb_inputs	= 4;
     SFERES_CONST size_t nb_outputs	= 1;
     SFERES_CONST size_t min_nb_neurons	= 4;
@@ -148,16 +141,15 @@ struct Params
   };
 };
 
-BOOST_AUTO_TEST_CASE(direct_gen)
-{
+BOOST_AUTO_TEST_CASE(direct_gen) {
   using namespace nn;
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> weight_t;
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> bias_t;
   typedef PfWSum<weight_t> pf_t;
-  typedef AfTanh<bias_t> af_t; 
+  typedef AfTanh<bias_t> af_t;
 
   sferes::gen::Dnn<Neuron<pf_t, af_t>,  Connection<weight_t>, Params> gen1, gen2, gen3, gen4;
-      
+
   gen1.random();
   gen2.random();
 
@@ -169,15 +161,14 @@ BOOST_AUTO_TEST_CASE(direct_gen)
 
 
 
-BOOST_AUTO_TEST_CASE(direct_nn_serialize)
-{
+BOOST_AUTO_TEST_CASE(direct_nn_serialize) {
   srand(0);
 
   using namespace nn;
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> weight_t;
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> bias_t;
   typedef PfWSum<weight_t> pf_t;
-  typedef AfTanh<bias_t> af_t; 
+  typedef AfTanh<bias_t> af_t;
   typedef sferes::gen::Dnn<Neuron<pf_t, af_t>,  Connection<weight_t>, Params> gen_t;
   typedef phen::Dnn<gen_t, fit::FitDummy<>, Params> phen_t;
 
@@ -185,35 +176,34 @@ BOOST_AUTO_TEST_CASE(direct_nn_serialize)
   typedef boost::archive::binary_oarchive oa_t;
   typedef boost::archive::binary_iarchive ia_t;
 
-  for (size_t i = 0; i < 10; ++i) 
+  for (size_t i = 0; i < 10; ++i) {
+    phen_t indiv[3];
+    indiv[0].random();
+    indiv[0].mutate();
+    indiv[0].mutate();
+    indiv[0].mutate();
+    indiv[0].nn().init();
     {
-      phen_t indiv[3];
-      indiv[0].random();
-      indiv[0].mutate();
-      indiv[0].mutate();
-      indiv[0].mutate();
-      indiv[0].nn().init();
-      {
-	std::ofstream ofs("/tmp/serialize_nn1.bin", std::ios::binary);
-	oa_t oa(ofs); 
-	oa & indiv[0];
-      }
-      {
-	std::ifstream ifs("/tmp/serialize_nn1.bin", std::ios::binary);
-	ia_t ia(ifs);
-	ia & indiv[1];
-      }
-      indiv[2].nn() = indiv[0].nn();
-      using namespace boost::assign;
-      std::vector<float> in = list_of(0.5f)(1.0f)(-0.25f)(1.101f);
-      for (size_t j = 0; j < 3; ++j)
-	indiv[j].nn().init();
-      for (size_t i = 0; i < 10; ++i)
-	for (size_t j = 0; j < 3; ++j)
-	  indiv[j].nn().step(in);
-      
-      for (size_t j = 1; j < 3; ++j)
-	BOOST_CHECK_CLOSE(indiv[0].nn().get_outf(0), indiv[j].nn().get_outf(0), 1e-5);
+      std::ofstream ofs("/tmp/serialize_nn1.bin", std::ios::binary);
+      oa_t oa(ofs);
+      oa & indiv[0];
     }
+    {
+      std::ifstream ifs("/tmp/serialize_nn1.bin", std::ios::binary);
+      ia_t ia(ifs);
+      ia & indiv[1];
+    }
+    indiv[2].nn() = indiv[0].nn();
+    using namespace boost::assign;
+    std::vector<float> in = list_of(0.5f)(1.0f)(-0.25f)(1.101f);
+    for (size_t j = 0; j < 3; ++j)
+      indiv[j].nn().init();
+    for (size_t i = 0; i < 10; ++i)
+      for (size_t j = 0; j < 3; ++j)
+        indiv[j].nn().step(in);
+
+    for (size_t j = 1; j < 3; ++j)
+      BOOST_CHECK_CLOSE(indiv[0].nn().get_outf(0), indiv[j].nn().get_outf(0), 1e-5);
+  }
 }
 

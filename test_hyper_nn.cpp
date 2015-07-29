@@ -48,10 +48,8 @@ using namespace sferes;
 using namespace sferes::gen::dnn;
 using namespace sferes::gen::evo_float;
 
-struct Params1
-{
-  struct dnn
-  {
+struct Params1 {
+  struct dnn {
     SFERES_CONST size_t nb_inputs = 3;
     SFERES_CONST size_t nb_outputs = 1;
 
@@ -63,8 +61,7 @@ struct Params1
 
     SFERES_CONST init_t init = ff;
   };
-  struct evo_float
-  {
+  struct evo_float {
     SFERES_CONST float mutation_rate = 0.1f;
     SFERES_CONST float cross_rate = 0.1f;
     SFERES_CONST mutation_t mutation_type = polynomial;
@@ -72,24 +69,20 @@ struct Params1
     SFERES_CONST float eta_m = 15.0f;
     SFERES_CONST float eta_c = 15.0f;
   };
-  struct parameters
-  {
+  struct parameters {
     SFERES_CONST float min = -2.0f;
     SFERES_CONST float max = 2.0f;
   };
 
-  struct cppn
-  {
-     // params of the CPPN
-    struct sampled
-    {
+  struct cppn {
+    // params of the CPPN
+    struct sampled {
       SFERES_ARRAY(float, values, 0, 1, 2);
       SFERES_CONST float mutation_rate = 0.1f;
       SFERES_CONST float cross_rate = 0.25f;
       SFERES_CONST bool ordered = false;
     };
-    struct evo_float
-    {
+    struct evo_float {
       SFERES_CONST float mutation_rate = 0.1f;
       SFERES_CONST float cross_rate = 0.1f;
       SFERES_CONST mutation_t mutation_type = polynomial;
@@ -101,10 +94,8 @@ struct Params1
 };
 
 
-struct Params2
-{
-  struct dnn
-  {
+struct Params2 {
+  struct dnn {
     SFERES_CONST size_t nb_inputs = 4;
     SFERES_CONST size_t nb_outputs = 1;
 
@@ -120,8 +111,7 @@ struct Params2
     SFERES_CONST float m_rate_fparams = 1.0f;
     SFERES_CONST init_t init = ff;
   };
-  struct evo_float
-  {
+  struct evo_float {
     SFERES_CONST float mutation_rate = 0.1f;
     SFERES_CONST float cross_rate = 0.1f;
     SFERES_CONST mutation_t mutation_type = polynomial;
@@ -129,24 +119,20 @@ struct Params2
     SFERES_CONST float eta_m = 15.0f;
     SFERES_CONST float eta_c = 15.0f;
   };
-  struct parameters
-  {
+  struct parameters {
     SFERES_CONST float min = -2.0f;
     SFERES_CONST float max = 2.0f;
   };
 
-  struct cppn
-  {
-     // params of the CPPN
-    struct sampled
-    {
+  struct cppn {
+    // params of the CPPN
+    struct sampled {
       SFERES_ARRAY(float, values, 0, 1, 2);
       SFERES_CONST float mutation_rate = 0.1f;
       SFERES_CONST float cross_rate = 0.25f;
       SFERES_CONST bool ordered = false;
     };
-    struct evo_float
-    {
+    struct evo_float {
       SFERES_CONST float mutation_rate = 0.1f;
       SFERES_CONST float cross_rate = 0.1f;
       SFERES_CONST mutation_t mutation_type = polynomial;
@@ -155,8 +141,7 @@ struct Params2
       SFERES_CONST float eta_c = 15.0f;
     };
   };
-  struct hyper_nn
-  {
+  struct hyper_nn {
     SFERES_ARRAY(float, substrate,
                  0.2f, 0.2f, // in 1
                  0.2f, 0.8f, // in 2
@@ -165,7 +150,7 @@ struct Params2
                  0.8f, 0.2f, // hidden 2
                  0.2f, 0.5f, // hidden 3
                  0.5f, 0.2f  // hidden 4
-                 );
+                );
     SFERES_ARRAY(float, weights, -1, 0, 1);
     SFERES_ARRAY(float, bias, -1, 0, 1);
     SFERES_CONST size_t nb_inputs = 2;
@@ -176,14 +161,13 @@ struct Params2
     SFERES_CONST float conn_threshold = 0.2f;
     SFERES_CONST float max_y = 10.0f;
     typedef nn::Neuron<nn::PfWSum<>,
-                       nn::AfTanh<nn::params::Vectorf<1> > > neuron_t;
+            nn::AfTanh<nn::params::Vectorf<1> > > neuron_t;
     typedef nn::Connection<> connection_t;
   };
 };
 
 
-BOOST_AUTO_TEST_CASE(gen_cppn)
-{
+BOOST_AUTO_TEST_CASE(gen_cppn) {
   srand(time(0));
   typedef phen::Parameters<gen::EvoFloat<1, Params1>, fit::FitDummy<>, Params1> weight_t;
   typedef gen::HyperNn<weight_t, Params1> cppn_t;
@@ -198,13 +182,12 @@ BOOST_AUTO_TEST_CASE(gen_cppn)
   std::ofstream ofs2("/tmp/nn.dot");
   gen1.write(ofs2);
 
-   //  generate a picture
+  //  generate a picture
   char*pic = new char[256 * 256];
   std::vector<float> in(3);
   in[0] = 1;
   for (size_t i = 0; i < 256; ++i)
-    for (size_t j = 0; j < 256; ++j)
-    {
+    for (size_t j = 0; j < 256; ++j) {
       in[1] = i / 128.0f - 1.0;
       in[2] = j / 128.0f - 1.0;
       for (size_t k = 0; k < gen1.get_depth(); ++k)
@@ -218,8 +201,7 @@ BOOST_AUTO_TEST_CASE(gen_cppn)
   ofs.write(pic, 256 * 256);
 }
 
-BOOST_AUTO_TEST_CASE(phen_hyper_nn)
-{
+BOOST_AUTO_TEST_CASE(phen_hyper_nn) {
   srand(time(0));
   typedef fit::FitDummy<> fit_t;
   typedef phen::Parameters<gen::EvoFloat<1, Params2>, fit::FitDummy<>, Params2> weight_t;

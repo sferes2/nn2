@@ -4,13 +4,13 @@
 //|
 //| This software is a computer program whose purpose is to facilitate
 //| experiments in evolutionary computation and evolutionary robotics.
-//| 
+//|
 //| This software is governed by the CeCILL license under French law
 //| and abiding by the rules of distribution of free software.  You
 //| can use, modify and/ or redistribute the software under the terms
 //| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 //| following URL "http://www.cecill.info".
-//| 
+//|
 //| As a counterpart to the access to the source code and rights to
 //| copy, modify and redistribute granted by the license, users are
 //| provided only with a limited warranty and the software's author,
@@ -32,7 +32,7 @@
 //| The fact that you are presently reading this means that you have
 //| had knowledge of the CeCILL license and that you accept its terms.
 
-#define BOOST_TEST_DYN_LINK 
+#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE dnn_ff
 
 #include <boost/archive/xml_oarchive.hpp>
@@ -56,10 +56,8 @@
 using namespace sferes;
 using namespace sferes::gen::dnn;
 using namespace sferes::gen::evo_float;
-struct Params
-{
-  struct evo_float
-  {
+struct Params {
+  struct evo_float {
     SFERES_CONST float mutation_rate = 0.1f;
     SFERES_CONST float cross_rate = 0.1f;
     SFERES_CONST mutation_t mutation_type = polynomial;
@@ -67,15 +65,13 @@ struct Params
     SFERES_CONST float eta_m = 15.0f;
     SFERES_CONST float eta_c = 15.0f;
   };
-  struct parameters
-  {
+  struct parameters {
     // maximum value of parameters
     SFERES_CONST float min = -5.0f;
     // minimum value
     SFERES_CONST float max = 5.0f;
   };
-  struct dnn
-  {
+  struct dnn {
     SFERES_CONST size_t nb_inputs	= 4;
     SFERES_CONST size_t nb_outputs	= 2;
     SFERES_CONST size_t min_nb_neurons	= 4;
@@ -96,24 +92,24 @@ struct Params
 
 
 
-struct cycle_detector : public boost::dfs_visitor<>
-{
-  cycle_detector(bool& has_cycle) 
+struct cycle_detector : public boost::dfs_visitor<> {
+  cycle_detector(bool& has_cycle)
     : m_has_cycle(has_cycle) { }
 
   template <class Edge, class Graph>
-  void back_edge(Edge, Graph&) { m_has_cycle = true; }
-protected:
+  void back_edge(Edge, Graph&) {
+    m_has_cycle = true;
+  }
+ protected:
   bool& m_has_cycle;
 };
 
-BOOST_AUTO_TEST_CASE(direct_nn_ff)
-{
+BOOST_AUTO_TEST_CASE(direct_nn_ff) {
   srand(time(0));
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> weight_t;
   typedef phen::Parameters<gen::EvoFloat<1, Params>, fit::FitDummy<>, Params> bias_t;
   typedef nn::PfWSum<weight_t> pf_t;
-  typedef nn::AfTanh<bias_t> af_t; 
+  typedef nn::AfTanh<bias_t> af_t;
   typedef nn::Neuron<pf_t, af_t> neuron_t;
   typedef nn::Connection<weight_t> connection_t;
   typedef gen::DnnFF<neuron_t, connection_t, Params> gen_t;
@@ -136,9 +132,9 @@ BOOST_AUTO_TEST_CASE(direct_nn_ff)
   i.nn().write(ofs2);
   bool has_cycle = false;
   cycle_detector vis(has_cycle);
-  boost::depth_first_search(i.nn().get_graph(), 
-			    boost::color_map(get(&phen_t::nn_t::neuron_t::_color, 
-						 i.nn().get_graph())).visitor(vis));
+  boost::depth_first_search(i.nn().get_graph(),
+                            boost::color_map(get(&phen_t::nn_t::neuron_t::_color,
+                                i.nn().get_graph())).visitor(vis));
   BOOST_CHECK(!has_cycle);
 
 }

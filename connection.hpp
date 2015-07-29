@@ -4,13 +4,13 @@
 //|
 //| This software is a computer program whose purpose is to facilitate
 //| experiments in evolutionary computation and evolutionary robotics.
-//| 
+//|
 //| This software is governed by the CeCILL license under French law
 //| and abiding by the rules of distribution of free software.  You
 //| can use, modify and/ or redistribute the software under the terms
 //| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 //| following URL "http://www.cecill.info".
-//| 
+//|
 //| As a counterpart to the access to the source code and rights to
 //| copy, modify and redistribute granted by the license, users are
 //| provided only with a limited warranty and the software's author,
@@ -37,17 +37,21 @@
 
 #include "params.hpp"
 
-namespace nn
-{
+namespace nn {
   template<typename W = float, typename IO = float>
-  struct Connection
-  {
+  struct Connection {
     typedef W weight_t;
     typedef IO io_t;
-    const weight_t& get_weight() const { return _weight; }
-    weight_t& get_weight() { return _weight; }
-    void set_weight(const weight_t& w) { _weight = w; }
-  protected:
+    const weight_t& get_weight() const {
+      return _weight;
+    }
+    weight_t& get_weight() {
+      return _weight;
+    }
+    void set_weight(const weight_t& w) {
+      _weight = w;
+    }
+   protected:
     weight_t _weight;
   };
 }

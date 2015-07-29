@@ -4,13 +4,13 @@
 //|
 //| This software is a computer program whose purpose is to facilitate
 //| experiments in evolutionary computation and evolutionary robotics.
-//| 
+//|
 //| This software is governed by the CeCILL license under French law
 //| and abiding by the rules of distribution of free software.  You
 //| can use, modify and/ or redistribute the software under the terms
 //| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 //| following URL "http://www.cecill.info".
-//| 
+//|
 //| As a counterpart to the access to the source code and rights to
 //| copy, modify and redistribute granted by the license, users are
 //| provided only with a limited warranty and the software's author,
@@ -35,8 +35,7 @@
 
 #include "nn.hpp"
 
-int main()
-{
+int main() {
   using namespace nn;
   typedef NN<Neuron<PfWSum<>, AfTanh<float> >, Connection<> > nn_t;
 
@@ -60,7 +59,7 @@ int main()
     for (size_t j = 0; j < neurons.size(); ++j)
       nn.add_connection(neurons[j], nn.get_output(i), 0.20f);
 
-  std::vector<float> in(nn.get_nb_inputs()); 
+  std::vector<float> in(nn.get_nb_inputs());
   nn.init();
   std::fill(in.begin(), in.end(), 1.0f);
   size_t nb_steps = 50000;

@@ -45,14 +45,11 @@
 #include <boost/graph/reverse_graph.hpp>
 #include <boost/property_map/vector_property_map.hpp>
 
-namespace sferes
-{
-  namespace gen
-  {
+namespace sferes {
+  namespace gen {
     template<typename N, typename C, typename Params>
-    class DnnFF : public Dnn<N, C, Params>
-    {
-    public:
+    class DnnFF : public Dnn<N, C, Params> {
+     public:
       typedef nn::NN<N, C> nn_t;
       typedef N neuron_t;
       typedef C conn_t;
@@ -61,146 +58,138 @@ namespace sferes
       typedef typename nn_t::edge_desc_t edge_desc_t;
       typedef typename nn_t::graph_t graph_t;
       DnnFF() {}
-      DnnFF& operator=(const DnnFF& o)
-      {
-	static_cast<nn::NN<N, C>& >(*this)
-	  = static_cast<const nn::NN<N, C>& >(o);
-	return *this;
+      DnnFF& operator=(const DnnFF& o) {
+        static_cast<nn::NN<N, C>& >(*this)
+          = static_cast<const nn::NN<N, C>& >(o);
+        return *this;
       }
-      DnnFF(const DnnFF& o)
-      { *this = o; }
-      void init()
-      {
-	Dnn<N, C, Params>::init();
-	_compute_depth();
+      DnnFF(const DnnFF& o) {
+        *this = o;
       }
-      void random()
-      {
-	assert(Params::dnn::init == dnn::ff);
-	this->_random_ff(Params::dnn::nb_inputs, Params::dnn::nb_outputs);
-	_make_all_vertices();
+      void init() {
+        Dnn<N, C, Params>::init();
+        _compute_depth();
       }
-      void mutate()
-      {
- 	_change_conns();
-	this->_change_neurons();
+      void random() {
+        assert(Params::dnn::init == dnn::ff);
+        this->_random_ff(Params::dnn::nb_inputs, Params::dnn::nb_outputs);
+        _make_all_vertices();
+      }
+      void mutate() {
+        _change_conns();
+        this->_change_neurons();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_add_conn)
- 	  _add_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_add_conn)
+          _add_conn();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_del_conn)
-  	  this->_del_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_del_conn)
+          this->_del_conn();
 
-  	if (misc::rand<float>() < Params::dnn::m_rate_add_neuron)
-  	  this->_add_neuron_on_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_add_neuron)
+          this->_add_neuron_on_conn();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_del_neuron)
-   	  this->_del_neuron();
+        if (misc::rand<float>() < Params::dnn::m_rate_del_neuron)
+          this->_del_neuron();
       }
 
-      void cross(const DnnFF& o, DnnFF& c1, DnnFF& c2)
-      {
-	if (misc::flip_coin())
-	  {
-	    c1 = *this;
-	    c2 = o;
-	  }
-	else
-	  {
-	    c2 = *this;
-	    c1 = o;
-	  }
+      void cross(const DnnFF& o, DnnFF& c1, DnnFF& c2) {
+        if (misc::flip_coin()) {
+          c1 = *this;
+          c2 = o;
+        } else {
+          c2 = *this;
+          c1 = o;
+        }
       }
-      size_t get_depth() const { return _depth; }
-    protected:
+      size_t get_depth() const {
+        return _depth;
+      }
+     protected:
       std::set<vertex_desc_t> _all_vertices;
       size_t _depth;
 
-      void _make_all_vertices()
-      {
-	_all_vertices.clear();
-	BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
-	  _all_vertices.insert(v);
+      void _make_all_vertices() {
+        _all_vertices.clear();
+        BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
+        _all_vertices.insert(v);
       }
-      void _change_conns()
-      {
-	BGL_FORALL_EDGES_T(e, this->_g, graph_t)
-	  this->_g[e].get_weight().mutate();
+      void _change_conns() {
+        BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+        this->_g[e].get_weight().mutate();
       }
 
 
       // add only feed-forward connections
-      void _add_conn()
-      {
-	using namespace boost;
-	vertex_desc_t v = this->_random_src();
-	std::set<vertex_desc_t> preds;
-	nn::bfs_pred_visitor<vertex_desc_t> vis(preds);
-	breadth_first_search(make_reverse_graph(this->_g),
-			     v, color_map(get(&N::_color, this->_g)).visitor(vis));
-	_make_all_vertices();
-	std::set<vertex_desc_t> tmp, avail, in;
-	// avoid to connect to predecessors
-	std::set_difference(_all_vertices.begin(), _all_vertices.end(),
-			    preds.begin(), preds.end(),
-			    std::insert_iterator<std::set<vertex_desc_t> >(tmp, tmp.begin()));
-	// avoid to connect to inputs
-	BOOST_FOREACH(vertex_desc_t v, this->_inputs) // inputs need
-						      // to be sorted
-	    in.insert(v);
-	std::set_difference(tmp.begin(), tmp.end(),
-			    in.begin(), in.end(),
-			    std::insert_iterator<std::set<vertex_desc_t> >(avail, avail.begin()));
+      void _add_conn() {
+        using namespace boost;
+        vertex_desc_t v = this->_random_src();
+        std::set<vertex_desc_t> preds;
+        nn::bfs_pred_visitor<vertex_desc_t> vis(preds);
+        breadth_first_search(make_reverse_graph(this->_g),
+                             v, color_map(get(&N::_color, this->_g)).visitor(vis));
+        _make_all_vertices();
+        std::set<vertex_desc_t> tmp, avail, in;
+        // avoid to connect to predecessors
+        std::set_difference(_all_vertices.begin(), _all_vertices.end(),
+                            preds.begin(), preds.end(),
+                            std::insert_iterator<std::set<vertex_desc_t> >(tmp, tmp.begin()));
+        // avoid to connect to inputs
+        BOOST_FOREACH(vertex_desc_t v, this->_inputs) // inputs need
+        // to be sorted
+        in.insert(v);
+        std::set_difference(tmp.begin(), tmp.end(),
+                            in.begin(), in.end(),
+                            std::insert_iterator<std::set<vertex_desc_t> >(avail, avail.begin()));
 
-	if (avail.empty())
-	  return;
-	vertex_desc_t tgt = *misc::rand_l(avail);
-	typename nn_t::weight_t w;
-	w.random();
-	this->add_connection(v, tgt, w);
+        if (avail.empty())
+          return;
+        vertex_desc_t tgt = *misc::rand_l(avail);
+        typename nn_t::weight_t w;
+        w.random();
+        this->add_connection(v, tgt, w);
       }
 
       // useful to make the right number of steps
-      void _compute_depth()
-      {
-	using namespace boost;
-	typedef std::map<vertex_desc_t, size_t> int_map_t;
-	typedef std::map<vertex_desc_t, vertex_desc_t> vertex_map_t;
-	typedef std::map<vertex_desc_t, default_color_type> color_map_t;
-	typedef std::map<edge_desc_t, int> edge_map_t;
+      void _compute_depth() {
+        using namespace boost;
+        typedef std::map<vertex_desc_t, size_t> int_map_t;
+        typedef std::map<vertex_desc_t, vertex_desc_t> vertex_map_t;
+        typedef std::map<vertex_desc_t, default_color_type> color_map_t;
+        typedef std::map<edge_desc_t, int> edge_map_t;
 
-	typedef associative_property_map<int_map_t> a_map_t;
-	typedef associative_property_map<color_map_t> c_map_t;
-	typedef associative_property_map<vertex_map_t> v_map_t;
-	typedef associative_property_map<edge_map_t> e_map_t;
+        typedef associative_property_map<int_map_t> a_map_t;
+        typedef associative_property_map<color_map_t> c_map_t;
+        typedef associative_property_map<vertex_map_t> v_map_t;
+        typedef associative_property_map<edge_map_t> e_map_t;
 
-	color_map_t cm; c_map_t cmap(cm);
-	vertex_map_t vm; v_map_t pmap(vm);
-	edge_map_t em;
-	BGL_FORALL_EDGES_T(e, this->_g, graph_t)
-	  em[e] = 1;
-	e_map_t wmap(em);
-	_depth = 0;
-	// we compute the longest path between inputs and outputs
-	BOOST_FOREACH(vertex_desc_t s, this->_inputs)
-	  {
-	    int_map_t im; a_map_t dmap(im);
- 	    dag_shortest_paths
- 	      (this->_g, s, dmap, wmap, cmap, pmap,
-	       dijkstra_visitor<null_visitor>(),
- 	       std::greater<int>(),
-	       closed_plus<int>(),
-	       std::numeric_limits<int>::min(), 0);
+        color_map_t cm;
+        c_map_t cmap(cm);
+        vertex_map_t vm;
+        v_map_t pmap(vm);
+        edge_map_t em;
+        BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+        em[e] = 1;
+        e_map_t wmap(em);
+        _depth = 0;
+        // we compute the longest path between inputs and outputs
+        BOOST_FOREACH(vertex_desc_t s, this->_inputs) {
+          int_map_t im;
+          a_map_t dmap(im);
+          dag_shortest_paths
+          (this->_g, s, dmap, wmap, cmap, pmap,
+           dijkstra_visitor<null_visitor>(),
+           std::greater<int>(),
+           closed_plus<int>(),
+           std::numeric_limits<int>::min(), 0);
 
- 	    BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
-	      {
-		size_t d = get(dmap, v);
-		if (this->_g[v].get_out() != -1 && d <= num_vertices(this->_g))
-		  _depth = std::max(_depth, d);
-	      }
-	  }
-	// add one to be sure
-	_depth ++;
+          BGL_FORALL_VERTICES_T(v, this->_g, graph_t) {
+            size_t d = get(dmap, v);
+            if (this->_g[v].get_out() != -1 && d <= num_vertices(this->_g))
+              _depth = std::max(_depth, d);
+          }
+        }
+        // add one to be sure
+        _depth ++;
       }
 
     };

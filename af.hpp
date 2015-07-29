@@ -38,44 +38,46 @@
 #include "params.hpp"
 
 // classic activation functions
-namespace nn
-{
+namespace nn {
   template <typename P = params::Dummy>
-  class Af
-  {
-  public:
+  class Af {
+   public:
     typedef P params_t;
-    const params_t& get_params() const  { return _params; }
-    params_t& get_params() { return _params; }
-    void set_params(const params_t& params) { _params = params; }
+    const params_t& get_params() const  {
+      return _params;
+    }
+    params_t& get_params() {
+      return _params;
+    }
+    void set_params(const params_t& params) {
+      _params = params;
+    }
     void init() {}
     Af() {}
-  protected:
+   protected:
     params_t _params;
   };
 
   // -1 to +1 sigmoid
   template <typename P>
-  struct AfTanh : public Af<P>
-  {
+  struct AfTanh : public Af<P> {
     typedef P params_t;
     BOOST_STATIC_CONSTEXPR float lambda = 5.0f;
-    AfTanh() { assert(trait<P>::size(this->_params) == 1); }
-    float operator()(float p) const
-    {
+    AfTanh() {
+      assert(trait<P>::size(this->_params) == 1);
+    }
+    float operator()(float p) const {
       return tanh(p * lambda + trait<P>::single_value(this->_params));
     }
-  protected:
+   protected:
   };
   // -1 to +1 sigmoid
   template <typename P = float>
-  struct AfTanhNoBias : public Af<P>
-  {
+  struct AfTanhNoBias : public Af<P> {
     typedef params::Dummy params_t;
     BOOST_STATIC_CONSTEXPR float lambda = 5.0f;
     AfTanhNoBias() { }
-    float operator()(float p) const
-    {
+    float operator()(float p) const {
       return tanh(p * lambda);
     }
   };
@@ -83,43 +85,46 @@ namespace nn
 
 
   template <typename P = float>
-  struct AfSigmoidNoBias : public Af<>
-  {
+  struct AfSigmoidNoBias : public Af<> {
     typedef params::Dummy params_t;
     BOOST_STATIC_CONSTEXPR float lambda = 5.0f;
     AfSigmoidNoBias() { }
-    float operator()(float p) const { return 1.0 / (exp(-p * lambda) + 1); }
-  protected:
+    float operator()(float p) const {
+      return 1.0 / (exp(-p * lambda) + 1);
+    }
+   protected:
   };
 
   template <typename P = float>
-  struct AfSigmoidBias : public Af<P>
-  {
+  struct AfSigmoidBias : public Af<P> {
     typedef P params_t;
     BOOST_STATIC_CONSTEXPR float lambda = 5.0f;
-    AfSigmoidBias() { assert(this->_params.size() == 1); }
-    float operator()(float p) const
-    {
+    AfSigmoidBias() {
+      assert(this->_params.size() == 1);
+    }
+    float operator()(float p) const {
       return 1.0 / (exp(-p + trait<P>::single_value(this->_params) * lambda) + 1);
     }
-  protected:
+   protected:
   };
 
   // copy input to output
   // store an arbitrary parameter
   template<typename P = params::Dummy>
-  struct AfDirect : public Af<P>
-  {
+  struct AfDirect : public Af<P> {
     typedef P params_t;
-    float operator()(float p) const { return p; }
+    float operator()(float p) const {
+      return p;
+    }
   };
 
   // copy input to output
   template<typename T>
-  struct AfDirectT : public Af<params::Dummy>
-  {
+  struct AfDirectT : public Af<params::Dummy> {
     typedef params::Dummy params_t;
-    T operator()(T p) const { return p; }
+    T operator()(T p) const {
+      return p;
+    }
   };
 
 }

@@ -4,13 +4,13 @@
 //|
 //| This software is a computer program whose purpose is to facilitate
 //| experiments in evolutionary computation and evolutionary robotics.
-//| 
+//|
 //| This software is governed by the CeCILL license under French law
 //| and abiding by the rules of distribution of free software.  You
 //| can use, modify and/ or redistribute the software under the terms
 //| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 //| following URL "http://www.cecill.info".
-//| 
+//|
 //| As a counterpart to the access to the source code and rights to
 //| copy, modify and redistribute granted by the license, users are
 //| provided only with a limited warranty and the software's author,
@@ -33,7 +33,7 @@
 //| had knowledge of the CeCILL license and that you accept its terms.
 
 
-#define BOOST_TEST_DYN_LINK 
+#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE nn_mlp
 
 
@@ -44,19 +44,18 @@
 #include <algorithm>
 #include "mlp.hpp"
 
-BOOST_AUTO_TEST_CASE(nn_elman)
-{
+BOOST_AUTO_TEST_CASE(nn_elman) {
   using namespace nn;
   Mlp<Neuron<PfWSum<>, AfSigmoidNoBias<> >, Connection<> > nn(2, 3, 2);
   nn.init();
   BOOST_CHECK_EQUAL(nn.get_nb_neurons(), 3 + 3 + 2);
   BOOST_CHECK_EQUAL(nn.get_nb_connections(), 9 + 6 + 2);
-  std::vector<float> in(2); 
+  std::vector<float> in(2);
   in[0] = 1.0f;
   in[1] = 0.2f;
   for (unsigned i = 0; i < 1000; ++i)
     nn.step(in);
   float out1 = nn.get_outf(0);
   float out2 = nn.get_outf(1);
-  
+
 }

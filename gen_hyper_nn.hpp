@@ -44,38 +44,33 @@
 #include "gen_dnn_ff.hpp"
 #include "af_cppn.hpp"
 
-namespace sferes
-{
-  namespace gen
-  {
+namespace sferes {
+  namespace gen {
     template<typename W, typename Params>
     class HyperNn : public DnnFF<nn::Neuron<nn::PfWSum<W>,
-                                            nn::AfCppn<nn::cppn::AfParams<typename Params::cppn> > >,
-                                 nn::Connection<W>,
-                                 Params>
-    {
-      public:
-        typedef DnnFF<nn::Neuron<nn::PfWSum<W>,
-                                 nn::AfCppn<nn::cppn::AfParams<typename Params::cppn> > >,
-                      nn::Connection<W>,
-                      Params> nn_t;
-        typedef typename nn_t::neuron_t neuron_t;
-        typedef typename nn_t::conn_t conn_t;
-        void init()
-        {
-          BGL_FORALL_EDGES_T(e, this->get_graph(),
-                             typename nn_t::graph_t)
-          this->get_graph()[e].get_weight().develop();
+      nn::AfCppn<nn::cppn::AfParams<typename Params::cppn> > >,
+      nn::Connection<W>,
+      Params> {
+     public:
+      typedef DnnFF<nn::Neuron<nn::PfWSum<W>,
+              nn::AfCppn<nn::cppn::AfParams<typename Params::cppn> > >,
+              nn::Connection<W>,
+              Params> nn_t;
+      typedef typename nn_t::neuron_t neuron_t;
+      typedef typename nn_t::conn_t conn_t;
+      void init() {
+        BGL_FORALL_EDGES_T(e, this->get_graph(),
+                           typename nn_t::graph_t)
+        this->get_graph()[e].get_weight().develop();
 
-           // develop the parameters
-          BGL_FORALL_VERTICES_T(v, this->get_graph(),
-                                typename nn_t::graph_t)
-          {
-            this->get_graph()[v].get_afparams().develop();
-            this->get_graph()[v].get_pfparams().develop();
-          }
-          nn_t::init();
+        // develop the parameters
+        BGL_FORALL_VERTICES_T(v, this->get_graph(),
+                              typename nn_t::graph_t) {
+          this->get_graph()[v].get_afparams().develop();
+          this->get_graph()[v].get_pfparams().develop();
         }
+        nn_t::init();
+      }
     };
   }
 }

@@ -45,8 +45,7 @@
 #include <algorithm>
 #include "nn.hpp"
 
-BOOST_AUTO_TEST_CASE(nn_osc)
-{
+BOOST_AUTO_TEST_CASE(nn_osc) {
   using namespace nn;
   typedef std::pair<float, float> weight_t;
   typedef PfIjspeert<params::Vectorf<3> > pf_t;
@@ -62,32 +61,29 @@ BOOST_AUTO_TEST_CASE(nn_osc)
   float x = 0;
   float r = 0.59;
   float phi_ij = 0.81;
-  for (size_t i = 0; i < 5; ++i)
-    {
-      vertex_desc_t v = nn.add_neuron(boost::lexical_cast<std::string>(i));
-      nn.get_neuron_by_vertex(v).get_pf().set_omega(omega);
-      nn.get_neuron_by_vertex(v).get_pf().set_x(x);
-      nn.get_neuron_by_vertex(v).get_pf().set_r(r);
-      vs.push_back(v);
-    }
+  for (size_t i = 0; i < 5; ++i) {
+    vertex_desc_t v = nn.add_neuron(boost::lexical_cast<std::string>(i));
+    nn.get_neuron_by_vertex(v).get_pf().set_omega(omega);
+    nn.get_neuron_by_vertex(v).get_pf().set_x(x);
+    nn.get_neuron_by_vertex(v).get_pf().set_r(r);
+    vs.push_back(v);
+  }
 
-  for (size_t i = 0; i < 4; ++i)
-    {
-      nn.add_connection(vs[i], vs[i + 1], std::make_pair(5, phi_ij));
-      nn.add_connection(vs[i + 1], vs[i], std::make_pair(5, -phi_ij));
-    }
+  for (size_t i = 0; i < 4; ++i) {
+    nn.add_connection(vs[i], vs[i + 1], std::make_pair(5, phi_ij));
+    nn.add_connection(vs[i + 1], vs[i], std::make_pair(5, -phi_ij));
+  }
 
 
   nn.init();
-  for (size_t s = 0; s < 1000; ++s)
-    {
-      std::vector<weight_t> in;
-      nn.step(in);
-      for (size_t i = 0; i < vs.size(); ++i)
-	std::cout<< i << " "
-		 << nn.get_neuron_by_vertex(vs[i]).get_pf().get_theta_i()
-		 << std::endl;
-    }
+  for (size_t s = 0; s < 1000; ++s) {
+    std::vector<weight_t> in;
+    nn.step(in);
+    for (size_t i = 0; i < vs.size(); ++i)
+      std::cout<< i << " "
+               << nn.get_neuron_by_vertex(vs[i]).get_pf().get_theta_i()
+               << std::endl;
+  }
   // you should have beautiful oscillations
 
 }
