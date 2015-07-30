@@ -123,13 +123,13 @@ namespace nn {
 
   // useful but wrong place (?)
   template<typename _CharT, typename _Traits>
-  std::basic_ostream<_CharT, _Traits>&
+  static std::basic_ostream<_CharT, _Traits>&
   operator<<(std::basic_ostream<_CharT, _Traits>& ofs, const std::pair<float, float>& p) {
     return ofs<<p.first<<" "<<p.second;
   }
 
   template<typename _CharT, typename _Traits>
-  std::basic_ostream<_CharT, _Traits>&
+  static std::basic_ostream<_CharT, _Traits>&
   operator<<(std::basic_ostream<_CharT, _Traits>& ofs, const std::vector<float>& p) {
     for (size_t i = 0; i < p.size(); ++i)
       ofs<<p[i]<<" ";
@@ -138,7 +138,7 @@ namespace nn {
 
 
   template<typename T1, typename T2>
-  std::istream& operator>>(std::istream& ifs, std::pair<T1, T2>& p) {
+  static std::istream& operator>>(std::istream& ifs, std::pair<T1, T2>& p) {
     T1 t1;
     T2 t2;
     ifs >> t1;

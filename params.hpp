@@ -37,7 +37,7 @@
 namespace nn {
   namespace params {
     struct Dummy {
-      friend std::ostream& operator<<(std::ostream& output, const Dummy& e);
+      friend inline std::ostream& operator<<(std::ostream& output, const Dummy& e);
       Dummy() : _x(42) {}
       void mutate() {}
       void random() {}
