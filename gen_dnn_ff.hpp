@@ -47,165 +47,216 @@
 
 namespace sferes
 {
-  namespace gen
-  {
-    template<typename N, typename C, typename Params>
-    class DnnFF : public Dnn<N, C, Params>
+namespace gen
+{
+template<typename N, typename C, typename Params>
+class DnnFF : public Dnn<N, C, Params>
+{
+public:
+    typedef nn::NN<N, C> nn_t;
+    typedef N neuron_t;
+    typedef C conn_t;
+    typedef typename nn_t::io_t io_t;
+    typedef typename nn_t::vertex_desc_t vertex_desc_t;
+    typedef typename nn_t::edge_desc_t edge_desc_t;
+    typedef typename nn_t::graph_t graph_t;
+    DnnFF() {}
+    DnnFF& operator=(const DnnFF& o)
     {
-    public:
-      typedef nn::NN<N, C> nn_t;
-      typedef N neuron_t;
-      typedef C conn_t;
-      typedef typename nn_t::io_t io_t;
-      typedef typename nn_t::vertex_desc_t vertex_desc_t;
-      typedef typename nn_t::edge_desc_t edge_desc_t;
-      typedef typename nn_t::graph_t graph_t;
-      DnnFF() {}
-      DnnFF& operator=(const DnnFF& o)
-      {
-	static_cast<nn::NN<N, C>& >(*this)
-	  = static_cast<const nn::NN<N, C>& >(o);
-	return *this;
-      }
-      DnnFF(const DnnFF& o)
-      { *this = o; }
-      void init()
-      {
-	Dnn<N, C, Params>::init();
-	_compute_depth();
-      }
-      void random()
-      {
-	assert(Params::dnn::init == dnn::ff);
-	this->_random_ff(Params::dnn::nb_inputs, Params::dnn::nb_outputs);
-	_make_all_vertices();
-      }
-      void mutate()
-      {
- 	_change_conns();
-	this->_change_neurons();
+        static_cast<nn::NN<N, C>& >(*this)
+                = static_cast<const nn::NN<N, C>& >(o);
+        return *this;
+    }
+    DnnFF(const DnnFF& o)
+    { *this = o; }
+    void init()
+    {
+        Dnn<N, C, Params>::init();
+        _compute_depth();
+    }
+    void random()
+    {
+        assert(Params::dnn::init == dnn::ff);
+        this->_random_ff(Params::dnn::nb_inputs, Params::dnn::nb_outputs);
+        _make_all_vertices();
+    }
+    void mutate()
+    {
+        _change_conns();
+        this->_change_neurons();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_add_conn)
- 	  _add_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_add_conn)
+            _add_conn();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_del_conn)
-  	  this->_del_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_del_conn)
+            this->_del_conn();
 
-  	if (misc::rand<float>() < Params::dnn::m_rate_add_neuron)
-  	  this->_add_neuron_on_conn();
+        if (misc::rand<float>() < Params::dnn::m_rate_add_neuron)
+            this->_add_neuron_on_conn();
 
- 	if (misc::rand<float>() < Params::dnn::m_rate_del_neuron)
-   	  this->_del_neuron();
-      }
+        if (misc::rand<float>() < Params::dnn::m_rate_del_neuron)
+            this->_del_neuron();
+    }
 
-      void cross(const DnnFF& o, DnnFF& c1, DnnFF& c2)
-      {
-	if (misc::flip_coin())
-	  {
-	    c1 = *this;
-	    c2 = o;
-	  }
-	else
-	  {
-	    c2 = *this;
-	    c1 = o;
-	  }
-      }
-      size_t get_depth() const { return _depth; }
-    protected:
-      std::set<vertex_desc_t> _all_vertices;
-      size_t _depth;
+    void cross(const DnnFF& o, DnnFF& c1, DnnFF& c2)
+    {
+        if (misc::flip_coin())
+        {
+            c1 = *this;
+            c2 = o;
+        }
+        else
+        {
+            c2 = *this;
+            c1 = o;
+        }
+    }
+    size_t get_depth() const { return _depth; }
+protected:
+    std::set<vertex_desc_t> _all_vertices;
+    size_t _depth;
 
-      void _make_all_vertices()
-      {
-	_all_vertices.clear();
-	BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
-	  _all_vertices.insert(v);
-      }
-      void _change_conns()
-      {
-	BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+    void _make_all_vertices()
+    {
+        _all_vertices.clear();
+        BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
+                _all_vertices.insert(v);
+    }
+
+    void _change_conns()
+    {
+#ifdef CONSTRAINED_SUPG
+        BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+	{  
+	    /*For SUPG experiments if we do not want to mutate the connection from i2 to o0*/
+	    if (!((this->_g[source(e, this->_g)].get_id().compare("i2")==0) &&
+		  (this->_g[target(e, this->_g)].get_id().compare("o0")==0)))
+	    {
+	      this->_g[e].get_weight().mutate();
+	    }
+       }
+#else
+        BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+	{  
 	  this->_g[e].get_weight().mutate();
-      }
+	}  
+#endif
+    }
 
 
-      // add only feed-forward connections
-      void _add_conn()
-      {
-	using namespace boost;
-	vertex_desc_t v = this->_random_src();
-	std::set<vertex_desc_t> preds;
-	nn::bfs_pred_visitor<vertex_desc_t> vis(preds);
-	breadth_first_search(make_reverse_graph(this->_g),
-			     v, color_map(get(&N::_color, this->_g)).visitor(vis));
-	_make_all_vertices();
-	std::set<vertex_desc_t> tmp, avail, in;
-	// avoid to connect to predecessors
-	std::set_difference(_all_vertices.begin(), _all_vertices.end(),
-			    preds.begin(), preds.end(),
-			    std::insert_iterator<std::set<vertex_desc_t> >(tmp, tmp.begin()));
-	// avoid to connect to inputs
-	BOOST_FOREACH(vertex_desc_t v, this->_inputs) // inputs need
-						      // to be sorted
-	    in.insert(v);
-	std::set_difference(tmp.begin(), tmp.end(),
-			    in.begin(), in.end(),
-			    std::insert_iterator<std::set<vertex_desc_t> >(avail, avail.begin()));
+    // add only feed-forward connections
+    // possible to have more than one connection between two neurons
+    // look at code in function add_conn_nodup (file gen_dnn.hpp), used to add a random connection by avoiding to duplicate an existent connection. However, multiple connections may not seriously affect the evolution
+    void _add_conn()
+    {
+        using namespace boost;
+        vertex_desc_t v = this->_random_src(); //return a randomly selected non-output vertex (source of connection)
+        std::set<vertex_desc_t> preds;
+        nn::bfs_pred_visitor<vertex_desc_t> vis(preds);
+        breadth_first_search(make_reverse_graph(this->_g),
+                             v, color_map(get(&N::_color, this->_g)).visitor(vis));
+        _make_all_vertices();
+        std::set<vertex_desc_t> tmp, avail, in;
+        // avoid to connect to predecessors
+        std::set_difference(_all_vertices.begin(), _all_vertices.end(),
+                            preds.begin(), preds.end(),
+                            std::insert_iterator<std::set<vertex_desc_t> >(tmp, tmp.begin())); // results of set difference between all vertices and those in preds are stored in tmp
+        // avoid to connect to inputs
+        BOOST_FOREACH(vertex_desc_t v, this->_inputs) // inputs need
+                // to be sorted
+                in.insert(v);
+        std::set_difference(tmp.begin(), tmp.end(),
+                            in.begin(), in.end(),
+                            std::insert_iterator<std::set<vertex_desc_t> >(avail, avail.begin())); // removing input vertices from the collection
 
-	if (avail.empty())
-	  return;
-	vertex_desc_t tgt = *misc::rand_l(avail);
-	typename nn_t::weight_t w;
-	w.random();
-	this->add_connection(v, tgt, w);
-      }
+        if (avail.empty())
+            return;
+        vertex_desc_t tgt = *misc::rand_l(avail);
 
-      // useful to make the right number of steps
-      void _compute_depth()
-      {
-	using namespace boost;
-	typedef std::map<vertex_desc_t, size_t> int_map_t;
-	typedef std::map<vertex_desc_t, vertex_desc_t> vertex_map_t;
-	typedef std::map<vertex_desc_t, default_color_type> color_map_t;
-	typedef std::map<edge_desc_t, int> edge_map_t;
 
-	typedef associative_property_map<int_map_t> a_map_t;
-	typedef associative_property_map<color_map_t> c_map_t;
-	typedef associative_property_map<vertex_map_t> v_map_t;
-	typedef associative_property_map<edge_map_t> e_map_t;
+#ifdef CONSTRAINED_SUPG
+        //==================================================================================================================//
+        /*For expts. with SUPG, if we don't want to add additional connections if source neuron is i2 and target neuron is o0*/
+        if ((this->_g[v].get_id().compare("i2")==0) && (this->_g[tgt].get_id().compare("o0")==0))
+            return;
 
-	color_map_t cm; c_map_t cmap(cm);
-	vertex_map_t vm; v_map_t pmap(vm);
-	edge_map_t em;
-	BGL_FORALL_EDGES_T(e, this->_g, graph_t)
-	  em[e] = 1;
-	e_map_t wmap(em);
-	_depth = 0;
-	// we compute the longest path between inputs and outputs
-	BOOST_FOREACH(vertex_desc_t s, this->_inputs)
-	  {
-	    int_map_t im; a_map_t dmap(im);
- 	    dag_shortest_paths
- 	      (this->_g, s, dmap, wmap, cmap, pmap,
-	       dijkstra_visitor<null_visitor>(),
- 	       std::greater<int>(),
-	       closed_plus<int>(),
-	       std::numeric_limits<int>::min(), 0);
+        /*For expts. with SUPG, if we want to disable functional mappings of the timer input, so we don't allow a connection to be added if the source neuron is connected to i2 and the target neuron to o0 */
+        if (!((this->_g[v].get_id().compare("i2")==0) && (this->_g[tgt].get_id().compare("o0")==0)))
+        {
+            std::set<vertex_desc_t> preds_tgt;
+            nn::bfs_pred_visitor<vertex_desc_t> vis_preds_tgt(preds_tgt);
+            breadth_first_search(make_reverse_graph(this->_g),
+                                 v, color_map(get(&N::_color, this->_g)).visitor(vis_preds_tgt));
+            BOOST_FOREACH(vertex_desc_t v, preds_tgt) // is the predecessor of the potential source, the timer neuron i2?
+            if (this->_g[v].get_id().compare("i2")==0)
+            {
+                // is the successor of tgt, the output neuron o0. Or in other words is the predecessor of o0, tgt?
+                vertex_desc_t o0 = this->get_output(0);
 
- 	    BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
-	      {
-		size_t d = get(dmap, v);
-		if (this->_g[v].get_out() != -1 && d <= num_vertices(this->_g))
-		  _depth = std::max(_depth, d);
-	      }
-	  }
-	// add one to be sure
-	_depth ++;
-      }
+                std::set<vertex_desc_t> preds_tgt1;
+                nn::bfs_pred_visitor<vertex_desc_t> vis_preds_tgt1(preds_tgt1);
+                breadth_first_search(make_reverse_graph(this->_g),
+                                     o0, color_map(get(&N::_color, this->_g)).visitor(vis_preds_tgt1));
 
-    };
+                BOOST_FOREACH(vertex_desc_t v, preds_tgt1) // is the predecessor of o0, the potential target?
+                        if (this->_g[v].get_id() == this->_g[tgt].get_id())
+                        return;
+            }
+        }
+        //==============================================================================================================//
+#endif
 
-  }
+        typename nn_t::weight_t w;
+        w.random();
+        this->add_connection(v, tgt, w);
+    }
+
+    // useful to make the right number of steps
+    void _compute_depth()
+    {
+        using namespace boost;
+        typedef std::map<vertex_desc_t, size_t> int_map_t;
+        typedef std::map<vertex_desc_t, vertex_desc_t> vertex_map_t;
+        typedef std::map<vertex_desc_t, default_color_type> color_map_t;
+        typedef std::map<edge_desc_t, int> edge_map_t;
+
+        typedef associative_property_map<int_map_t> a_map_t;
+        typedef associative_property_map<color_map_t> c_map_t;
+        typedef associative_property_map<vertex_map_t> v_map_t;
+        typedef associative_property_map<edge_map_t> e_map_t;
+
+        color_map_t cm; c_map_t cmap(cm);
+        vertex_map_t vm; v_map_t pmap(vm);
+        edge_map_t em;
+        BGL_FORALL_EDGES_T(e, this->_g, graph_t)
+                em[e] = 1;
+        e_map_t wmap(em);
+        _depth = 0;
+        // we compute the longest path between inputs and outputs
+        BOOST_FOREACH(vertex_desc_t s, this->_inputs)
+        {
+            int_map_t im; a_map_t dmap(im);
+            dag_shortest_paths
+                    (this->_g, s, dmap, wmap, cmap, pmap,
+                     dijkstra_visitor<null_visitor>(),
+                     std::greater<int>(),
+                     closed_plus<int>(),
+                     std::numeric_limits<int>::min(), 0);
+
+            BGL_FORALL_VERTICES_T(v, this->_g, graph_t)
+            {
+                size_t d = get(dmap, v);
+                if (this->_g[v].get_out() != -1 && d <= num_vertices(this->_g))
+                    _depth = std::max(_depth, d);
+            }
+        }
+        // add one to be sure
+        _depth ++;
+    }
+
+};
+
+}
 }
 
 #endif

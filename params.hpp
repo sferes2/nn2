@@ -56,7 +56,8 @@ namespace nn
       float _x;
     };
 
-    std::ostream& operator<<(std::ostream& output, const Dummy& e) {
+    /*inline added to below function definition to prevent multiple definition compilation error for hexa_cluneexpt_hyperneat experiment compilation*/
+    inline std::ostream& operator<<(std::ostream& output, const Dummy& e) {
       return output;
     }
     template<int S>
