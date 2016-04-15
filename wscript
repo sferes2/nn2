@@ -5,13 +5,13 @@
 #|
 #| This software is a computer program whose purpose is to facilitate
 #| experiments in evolutionary computation and evolutionary robotics.
-#| 
+#|
 #| This software is governed by the CeCILL license under French law
 #| and abiding by the rules of distribution of free software.  You
 #| can use, modify and/ or redistribute the software under the terms
 #| of the CeCILL license as circulated by CEA, CNRS and INRIA at the
 #| following URL "http://www.cecill.info".
-#| 
+#|
 #| As a counterpart to the access to the source code and rights to
 #| copy, modify and redistribute granted by the license, users are
 #| provided only with a limited warranty and the software's author,
@@ -33,73 +33,56 @@
 #| The fact that you are presently reading this means that you have
 #| had knowledge of the CeCILL license and that you accept its terms.
 
-
-
-
 import os
-
-def set_options(blah) : pass
-
-def configure(blah): pass
 
 def build(bld):
     print ("Entering directory `" + os.getcwd() + "/modules/'")
-    test_nn = bld.new_task_gen('cxx', 'program')
-    test_nn.source = 'test_nn.cpp'
-    test_nn.includes = '. ../../'
-    test_nn.uselib_local = ''
-    test_nn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK'
-    test_nn.target = 'test_nn'
-    test_nn.unit_test = 1
+    bld.program('cxx', 'test',
+                source = 'test_nn.cpp',
+                includes = '. ../../',
+                uselib_local = '',
+                uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK',
+                target = 'test_nn')
 
-    test_dnn = bld.new_task_gen('cxx', 'program')
-    test_dnn.source = 'test_dnn.cpp'
-    test_dnn.includes = '. ../../'
-    test_dnn.uselib_local = 'sferes2'
-    test_dnn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_dnn.target = 'test_dnn'
-    test_dnn.unit_test = 1
+    bld.program('cxx', 'test',
+                source = 'test_dnn.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_dnn')
 
-    test_mlp = bld.new_task_gen('cxx', 'program')
-    test_mlp.source = 'test_mlp.cpp'
-    test_mlp.includes = '. ../../'
-    test_mlp.uselib_local = 'sferes2'
-    test_mlp.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_mlp.target = 'test_mlp'
-    test_mlp.unit_test = 1
+    bld.program('cxx', 'test',
+                source = 'test_mlp.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_mlp')
 
-    test_esn = bld.new_task_gen('cxx', 'program')
-    test_esn.source = 'test_hyper_nn.cpp'
-    test_esn.includes = '. ../../'
-    test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_esn.target = 'test_hyper_nn'
-    test_esn.unit_test = 1
+    bld.program('cxx', 'test',
+                source = 'test_hyper_nn.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST B,OOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_hyper_nn')
 
+    bld.program('cxx', 'test',
+                source = 'test_dnn_ff.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_dnn_ff')
 
-    test_esn = bld.new_task_gen('cxx', 'program')
-    test_esn.source = 'test_dnn_ff.cpp'
-    test_esn.includes = '. ../../'
-    test_esn.uselib_local = 'sferes2'
-    test_esn.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_esn.target = 'test_dnn_ff'
-    test_esn.unit_test = 1
-
-
-
-    test_osc = bld.new_task_gen('cxx', 'program')
-    test_osc.source = 'test_osc.cpp'
-    test_osc.includes = '. ../../'
-    test_osc.uselib_local = 'sferes2'
-    test_osc.uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-    test_osc.target = 'test_osc'
-    test_osc.unit_test = 1
+    bld.program('cxx', 'test',
+                source = 'test_osc.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_osc')
 
 
-    bench_nn = bld.new_task_gen('cxx', 'program')
-    bench_nn.source = 'bench_nn.cpp'
-    bench_nn.includes = '. ../../'
-    bench_nn.uselib_local = 'sferes2'
-    bench_nn.uselib = 'EIGEN3 BOOST_GRAPH BOOST'
-    bench_nn.target = 'bench_nn'
-
+    bld.program('cxx', 'program',
+                source = 'bench_nn.cpp',
+                includes = '. ../../',
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN BOOST_GRAPH BOOST',
+                target = 'bench_nn')
