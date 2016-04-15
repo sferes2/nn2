@@ -39,8 +39,8 @@ def build(bld):
     print ("Entering directory `" + os.getcwd() + "/modules/'")
     bld.program('cxx', 'test',
                 source = 'test_nn.cpp',
-                includes = '. ../../'
-                uselib_local = ''
+                includes = '. ../../',
+                uselib_local = '',
                 uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK',
                 target = 'test_nn')
 
@@ -55,15 +55,15 @@ def build(bld):
                 source = 'test_mlp.cpp',
                 includes = '. ../../',
                 uselib_local = 'sferes2',
-                uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATIOarget = 'test_mlp')
+                uselib = 'EIGEN3 BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_mlp')
 
     bld.program('cxx', 'test',
-                test_es= 'test_hyper_nn.cpp',
+                source = 'test_hyper_nn.cpp',
                 includes = '. ../../',
-                uselib_local = 'sfere,s2'
-                teslib = 'EIGEN3 BOOST B,OOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION'
-                tesget = 'test_hyper_nn')
-
+                uselib_local = 'sferes2',
+                uselib = 'EIGEN3 BOOST B,OOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
+                target = 'test_hyper_nn')
 
     bld.program('cxx', 'test',
                 source = 'test_dnn_ff.cpp',
