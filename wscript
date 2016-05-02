@@ -40,42 +40,42 @@ def build(bld):
     bld.program('cxx', 'test',
                 source = 'test_nn.cpp',
                 includes = '. ../../',
-                uselib_local = '',
+                use = '',
                 uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK',
                 target = 'test_nn')
 
     bld.program('cxx', 'test',
                 source = 'test_dnn.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
                 target = 'test_dnn')
 
     bld.program('cxx', 'test',
                 source = 'test_mlp.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
                 target = 'test_mlp')
 
     bld.program('cxx', 'test',
                 source = 'test_hyper_nn.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST B,OOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
                 target = 'test_hyper_nn')
 
     bld.program('cxx', 'test',
                 source = 'test_dnn_ff.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
                 target = 'test_dnn_ff')
 
     bld.program('cxx', 'test',
                 source = 'test_osc.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST BOOST_GRAPH BOOST_UNIT_TEST_FRAMEWORK BOOST_SERIALIZATION',
                 target = 'test_osc')
 
@@ -83,6 +83,6 @@ def build(bld):
     bld.program('cxx', 'program',
                 source = 'bench_nn.cpp',
                 includes = '. ../../',
-                uselib_local = 'sferes2',
+                use = 'sferes2',
                 uselib = 'EIGEN BOOST_GRAPH BOOST',
                 target = 'bench_nn')
