@@ -59,7 +59,36 @@ namespace sferes {
         }
         // init everything
         this->_gen.init();
+
+	_data.resize(2);
+	_data[0]=data(0);
+	_data[1]=data(1);
       }
+
+      // data code is just to make crowding distance code compile, it should not be used
+      float data(size_t i) const {
+        assert(i < size());
+	switch(i) {
+	case 0:
+	  return this->gen().get_nb_neurons();
+	  break; //useless, but good habit...
+	case 1:
+	  return this->gen().get_nb_connections();
+	  break; //useless, but good habit...
+	default:
+	  return -1;
+	}
+      }
+
+      size_t size() const {
+        return 2;
+      }
+
+      const std::vector<float> &data(void) const {
+	std::cerr<<"WARNING: data from DNN YOU SHOULDN'T BE HERE, useful only to compile..."<<std::endl;
+	return _data;
+      }
+
       void show(std::ostream& os) {
         this->gen().write(os);
       }
@@ -71,6 +100,7 @@ namespace sferes {
         return this->gen();
       }
     protected:
+      std::vector<float> _data;
     };
   }
 }
