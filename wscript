@@ -86,3 +86,10 @@ def build(bld):
                 use = 'sferes2',
                 uselib = 'EIGEN BOOST_GRAPH BOOST',
                 target = 'bench_nn')
+
+    bld.program('cxx', 'program',
+                source = 'example_dnn_nsga2.cpp',
+                includes = '. ../../',
+                use = 'sferes2',
+                uselib = 'EIGEN BOOST_GRAPH BOOST TBB',
+                target = 'example_dnn_nsga2')
