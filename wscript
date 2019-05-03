@@ -35,6 +35,8 @@
 
 import os
 
+def configure(conf):
+	pass
 def build(bld):
     print ("Entering directory `" + os.getcwd() + "/modules/'")
     bld.program('cxx', 'test',
